@@ -1,38 +1,54 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {NewsFragment} from "./NewsFragment";
 import {NewsItemType} from "../data/type/NewsItemType";
 import news from '../service/list';
+import ReactPaginate from 'react-paginate';
 
-export class NewsPage extends Component {
+interface State {
+    pageCount?: number;
+}
+
+interface IProps {
+}
+
+export class NewsPage extends React.Component<IProps, State> {
+    state: State = {
+        pageCount: 1
+    };
 
     render() {
         let newsCollection = news as Array<NewsItemType>;
-
+        console.log('==this.state.pageCount', this.state.pageCount);
         return (
-            // return (
-            //   <div className="App">
-            //     <header className="App-header">
-            //       <img src={logo} className="App-logo" alt="logo" />
-            //       <p>
-            //       </p>
-            //       <a
-            //         className="App-link"
-            //         href="https://reactjs.org"
-            //         target="_blank"
-            //         rel="noopener noreferrer"
-            //       >
-            //         Learn React
-            //       </a>
-            //     </header>
-            //   </div>
-            // );
             <div>
-                {
-                    newsCollection.map(news => <NewsFragment id={news.id} title={news.title} caption={news.caption}
-                                                             date={news.date} views={news.views} img={news.img}
-                                                             link={news.link}/>)
-                }
+                <div>
+                    {
+                        newsCollection.slice(0, 3).map((news, i) =>
+                            <NewsFragment key={i}
+                                          id={news.id} title={news.title}
+                                          caption={news.caption}
+                                          date={news.date} views={news.views}
+                                          img={news.img}
+                                          link={news.link}/>)
+                    }
+                </div>
+                <ReactPaginate previousLabel={"previous"}
+                               nextLabel={"next"}
+                               breakLabel={<a href="">...</a>}
+                               breakClassName={"break-me"}
+                               pageCount={12}
+                               marginPagesDisplayed={2}
+                               pageRangeDisplayed={5}
+                               onPageChange={this.onPageChange.bind(this)}
+                               containerClassName={"pagination"}
+                               activeClassName={"active"}
+                />
             </div>
         );
+    }
+
+
+    onPageChange(data: any) {
+        console.log('onPageChange', data);
     }
 }

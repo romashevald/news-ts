@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './static/styles/styles.scss';
 import {NewsPage} from "./component/NewsPage";
 
 ReactDOM.render(<NewsPage />, document.getElementById('root'));
